@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Chat from '../views/Chat.vue'
+import Study from '../views/Study.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,8 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
-  { path: '/chat/:id', component: Chat }
+  { path: '/chat/:id', component: Chat },
+  { path: '/study/:id', component: Study }
 ]
 
 const router = new VueRouter({

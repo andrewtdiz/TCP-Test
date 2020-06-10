@@ -2,10 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> | 
-      <router-link to="/Chat/1">Chat 1</router-link> | 
-      <router-link to="/Chat/2">Chat 2</router-link> | 
-      <router-link to="/Chat/3">Chat 3</router-link>
+      <router-link to="/Chat/1">Chat 1</router-link>
       <div class="flex justify-around w-64 ml-auto mr-6">
 
         <div class="w-6 h-6 rounded-full cursor-pointer relative" @click="changeColor(col)" v-for="(col, ind) in colors" :key="ind" :class="col">
@@ -27,13 +24,29 @@ export default {
       },
       colorSelected() {
         return this.$store.getters.getColorSelected
-      }
+      },
+      room() {
+        return this.$store.getters.getRoom
+      },
+      rooms() {
+        return this.$store.getters.getRooms
+      },
     },
     methods: {
       changeColor(val) {
         this.$store.commit('changeColor', val)
       },
-    }
+      changeRoom(newroom) {
+        console.log("Room changes to: " + newroom)
+        console.log("Rooms is: " + this.rooms)
+        // console.log(this.rooms[newroom])
+        this.$session.emit('switchRoom', this.rooms[newroom])
+      }
+    },
+    created() {     
+      // this.$store.commit('setUserID', Math.floor(Math.random() * 10000) + 1  )
+      this.$socket.emit('USERINFO',String(Math.floor(Math.random() * 10000) + 1))
+    },
 }
 </script>
 
