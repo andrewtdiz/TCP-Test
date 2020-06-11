@@ -23,10 +23,10 @@ export default new Vuex.Store({
     rooms: ['Home','chat1']
   },
   getters: {
-    getRooms(state) {
+    getRoom(state) {
       return state.room
     },
-    getRoom(state) {
+    getRooms(state) {
       return state.rooms
     },
     getShake(state) {
@@ -86,9 +86,8 @@ export default new Vuex.Store({
     SOCKET_DISCONNECT(state){
       state.connected = false
     },
-    SOCKET_updaterooms(state,rooms,room){
-      console.log("Current room: " + room)
-      state.room = room
+    SOCKET_updaterooms(state,rooms){
+      console.log("Current rooms: " + rooms)
       state.rooms = rooms
     },
     SOCKET_updatechat(state,data){

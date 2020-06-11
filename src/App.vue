@@ -1,8 +1,13 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/Chat/1">Chat 1</router-link>
+      <div class="flex justify-center w-full">
+        <router-link to="/">Home</router-link> |
+        <router-link v-for="(chat,ind) in rooms.slice(1)" :key="ind" :to="'/Chat/' + (ind+1)">Chat {{ind+1}}</router-link> 
+      </div>
+      <p @click="newRoom()" class="ml-1 text-red-500 hover:underline cursor-pointer">+ Make a new chat</p>
+
+      
       <div class="flex justify-around w-64 ml-auto mr-6">
 
         <div class="w-6 h-6 rounded-full cursor-pointer relative" @click="changeColor(col)" v-for="(col, ind) in colors" :key="ind" :class="col">
@@ -40,7 +45,10 @@ export default {
         console.log("Room changes to: " + newroom)
         console.log("Rooms is: " + this.rooms)
         // console.log(this.rooms[newroom])
-        this.$session.emit('switchRoom', this.rooms[newroom])
+        this.$socket.emit('switchRoom', this.rooms[newroom])
+      },
+      newRoom(){
+        this.$socket.emit('switchRoom', String("Chat"+this.rooms.length))
       }
     },
     created() {     

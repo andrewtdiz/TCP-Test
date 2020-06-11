@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-col items-center overflow-y-scroll" style="max-height: 100vh;">
+    <div class="flex flex-col items-center">
          <h1>Welcome to chat room #{{$route.params.id}}. {{shake}}</h1>
         
-        <div v-if="$route.params.id<4" class="flex flex-col  container items-start min-w-64">
+        <div ref="chatbox" class="flex flex-col  container items-start min-w-64 py-8 overflow-y-scroll" style="height: 50vh;">
             <div v-for="(message, ind) in chat" :key="ind" class="flex mt-2 shadow bg-white mx-4 md:mx-auto"><!--horizantil margin is just for display-->
             <div class="flex items-start px-2 py-4">
                 <div class="h-12 w-12 my-auto rounded-full mx-2" :class="message.color"></div>
@@ -21,6 +21,9 @@
         </div>
 
             
+
+        
+        </div>
 
         <div @keyup.enter="addChat" class="flex mx-auto items-center justify-center shadow-lg mt-16 mx-8 mb-4 max-w-lg">
             <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
@@ -41,11 +44,7 @@
                     </div>
                 </form>
             </div>
-        </div>
         <!-- comment form -->
-        <div v-else>
-            <p class="text-4xl">No Chat Room found for ID</p>
-        </div>
         
   </div>
 </template>
@@ -63,6 +62,7 @@ export default {
     sockets: {
         connect: function () {
             console.log('socket connected')
+            
         },
     },
     methods: {
@@ -87,15 +87,24 @@ export default {
         shake() {
             return this.$store.getters.getShake
         },
-        chats() {
-            return this.$store.getters.getChats
-        },
         chat() {
             return this.$store.getters.getChat
         },
+        rooms(){
+            return this.$store.getters.rooms
+        }
+    },
+    watch: {
+        chat() {
+            let objDiv = this.$refs['chatbox']
+            setTimeout(() => objDiv.scrollTop = objDiv.scrollHeight, 100)
+
+        },
     },
     mounted() {
-        this.$socket.emit('switchRoom', 'Chat1')
+        console.log("shoes please")
+        this.messages = []
+        this.$socket.emit('switchRoom', String('Chat' + this.$route.params.id))
     },
 }
 </script>
